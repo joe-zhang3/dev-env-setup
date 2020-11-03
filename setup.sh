@@ -8,6 +8,12 @@ then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
+echo "install autojump"
+brew install autojump
+
+echo "install tig"
+brew install tig
+
 echo "install oh-my-zsh"
 
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"

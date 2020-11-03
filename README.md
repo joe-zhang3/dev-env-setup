@@ -4,6 +4,8 @@ Please make sure you have iTerm installed, Terminal should be fine but I like iT
 
 ## install brew
 
+## install autojump
+## install tig
 
 ## install oh-my-zsh and set zsh as the default shell
 
