@@ -1,6 +1,13 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
+#if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  #source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+#fi
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
 
 ZSH_DISABLE_COMPFIX=true
 
@@ -56,16 +63,18 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git autojump tig gradle osx kubectl docker helm terraform vi-mode zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git autojump tig gradle osx kubectl docker docker-compose helm vi-mode zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
 
 # User configuration
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/amazon-corretto-8.jdk/Contents/Home"
+export JAVA_HOME="/Users/joezhang/Library/Java/JavaVirtualMachines/corretto-11.0.9.1/Contents/Home"
 export PATH=$PATH:/usr/local/go/bin
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
+source ~/.oh-my-zsh/plugins/history-substring-search/history-substring-search.zsh
+
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -107,12 +116,14 @@ alias vi='vim'
 alias v='vim $(fzf)'
 alias f='vi $(fzf)'
 alias findx='f(){ find . -name "$1" | xargs grep "$2"}; f'
+alias c='cx(){ cd $1 && ls -l }; cx'
+alias c='cx(){ cd $1 && ls -l}; cx'
 alias pwdx='pwd | pbcopy'
 alias grepx='grepx(){ grep -r "$1" . }; grepx'
 alias javac="javac -J-Dfile.encoding=utf8"
 alias grep="grep --color=auto"
 alias port='lsof -i tcp:'
-alias up='export http_proxy=http://127.0.0.1:1087;https_proxy=http://127.0.0.1:1087'
+alias up='export http_proxy=socks5://127.0.0.1:1080;https_proxy=socks5://127.0.0.1:1080'
 
 #default application when open files with specified extension.
 alias -s py=vi       
@@ -132,7 +143,7 @@ alias -s bz2='tar -xjvf'
 
 export PATH="/usr/local/sbin:/Users/joezhang/Documents/work/apache-maven-3.6.3/bin:$PATH"
 eval "$(pyenv init -)"
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -154,13 +165,17 @@ zle -N zle-line-init
 zle -N zle-line-finish
 zle -N zle-keymap-select
 
-
-export DOCKER_TLS_VERIFY="1"
-export DOCKER_HOST="tcp://192.168.99.100:2376"
-export DOCKER_CERT_PATH="/Users/joezhang/.docker/machine/machines/default"
-export DOCKER_MACHINE_NAME="default"
+#bind docker-machine env
+#eval $(docker-machine env default)
 
 bindkey '^I ' autosuggest-accept
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
